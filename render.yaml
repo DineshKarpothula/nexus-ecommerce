@@ -1,0 +1,50 @@
+services:
+  - type: web
+    name: nexus-ecommerce-backend
+    runtime: node
+    plan: free
+    rootDir: ecommerce-backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB
+        value: ecommerce
+      - key: JWT_SECRET
+        sync: false
+      - key: CLIENT_URLS
+        value: https://nexus-ecommerceplatform-pzvh.vercel.app
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: ADMIN_NAME
+        value: Dinesh
+      - key: ADMIN_EMAIL
+        value: dinesh@admin.com
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_PHONE
+        value: "9999999999"
+
+  - type: web
+    name: nexus-ecommerce-frontend
+    runtime: static
+    plan: free
+    buildCommand: cd "cd ecommerce-frontend" && npm install && npm run build
+    staticPublishPath: cd ecommerce-frontend/dist
+    autoDeployTrigger: commit
+    envVars:
+      - key: VITE_API_URL
+        value: https://nexus-ecommerceplatform.onrender.com/api
+      - key: VITE_STRIPE_PUBLISHABLE_KEY
+        sync: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

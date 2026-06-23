@@ -1,0 +1,48 @@
+import mongoose from 'mongoose'
+
+const wishlistSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+      unique: true,
+    },
+    items: [
+      {
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Product',
+          required: true,
+        },
+        priceAtAddTime: {
+          type: Number,
+          required: true,
+        },
+        addedAt: {
+          type: Date,
+          default: Date.now,
+        },
+        notifyOnDrop: {
+          type: Boolean,
+          default: true,
+        },
+        priceDropNotified: {
+          type: Boolean,
+          default: false,
+        },
+        notificationSentAt: {
+          type: Date,
+          default: null,
+        },
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+)
+
+const Wishlist = mongoose.model('Wishlist', wishlistSchema)
+
+export default Wishlist

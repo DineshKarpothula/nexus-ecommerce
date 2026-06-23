@@ -1,0 +1,130 @@
+# ShopVerse — E-Commerce Frontend
+
+Full-stack e-commerce frontend built with React + Vite + Tailwind CSS + Redux Toolkit.
+
+---
+
+## Project Structure
+
+```
+ecommerce-frontend/
+├── src/
+│   ├── components/
+│   │   └── common/
+│   │       ├── Navbar.jsx          ← Top nav with cart badge & user menu
+│   │       ├── Footer.jsx          ← Site footer
+│   │       ├── ProductCard.jsx     ← Reusable product card
+│   │       ├── Loaders.jsx         ← Skeleton & page loaders
+│   │       └── ProtectedRoute.jsx  ← Route guards (user + admin)
+│   ├── pages/
+│   │   ├── HomePage.jsx            ← Hero, categories, featured products
+│   │   ├── LoginPage.jsx           ← User & admin login
+│   │   ├── RegisterPage.jsx        ← New user registration
+│   │   ├── ProductsPage.jsx        ← Product listing + filters + search
+│   │   ├── ProductDetailPage.jsx   ← Single product with tabs
+│   │   ├── CartPage.jsx            ← Cart with qty controls
+│   │   ├── CheckoutPage.jsx        ← 3-step checkout flow
+│   │   ├── ProfilePage.jsx         ← User profile + orders + addresses
+│   │   ├── AdminPage.jsx           ← Admin dashboard, orders, users
+│   │   ├── admin/
+│   │   │   └── AdminProducts.jsx   ← Full CRUD product management
+│   │   └── NotFoundPage.jsx        ← 404 page
+│   ├── store/
+│   │   ├── store.js                ← Redux store
+│   │   ├── authSlice.js            ← Auth state (user, token, role)
+│   │   ├── cartSlice.js            ← Cart state (persisted to localStorage)
+│   │   └── productSlice.js         ← Products state
+│   ├── services/
+│   │   └── api.js                  ← All Axios API calls + interceptors
+│   ├── App.jsx                     ← Router with admin & user route separation
+│   ├── main.jsx                    ← Entry point
+│   └── index.css                   ← Global styles + CSS variables
+├── index.html
+├── vite.config.js                  ← Dev server with /api proxy to :5000
+├── tailwind.config.js
+└── package.json
+```
+
+---
+
+## Setup Instructions
+
+### 1. Install dependencies
+
+```bash
+cd ecommerce-frontend
+npm install
+```
+
+### 2. Start development server
+
+```bash
+npm run dev
+```
+
+App runs at → http://localhost:3000
+
+> The Vite proxy forwards all `/api` requests to `http://localhost:5000` (your backend).
+> The frontend works standalone with demo data even before the backend is connected.
+
+---
+
+## Role-Based Access
+
+| Role  | Login URL | After Login       |
+|-------|-----------|-------------------|
+| User  | /login    | → Home page (/)   |
+| Admin | /login    | → /admin dashboard|
+
+The admin role is determined by the `role` field in the JWT payload returned by the backend.
+The frontend route guard (`AdminRoute`) rejects any user whose `role !== 'admin'`.
+
+---
+
+## Environment
+
+No `.env` file needed for the frontend.
+All API calls go through the Vite proxy (`/api` → `localhost:5000`).
+
+When deploying to Vercel (production):
+- Set `VITE_API_URL` in Vercel dashboard
+- Update `api.js` baseURL to `import.meta.env.VITE_API_URL`
+
+---
+
+## Design System
+
+- **Font**: Playfair Display (headings) + DM Sans (body)
+- **Primary color**: Orange `#f97316`
+- **Theme**: Dark mode — `#0a0a0f` base
+- **Components**: glass cards, glow buttons, shimmer skeletons
+- **Animations**: Framer Motion page transitions + micro-interactions
+
+---
+
+## Pages Overview
+
+| Page             | Path              | Auth Required |
+|------------------|-------------------|---------------|
+| Home             | /                 | No            |
+| Products         | /products         | No            |
+| Product Detail   | /products/:id     | No            |
+| Cart             | /cart             | No            |
+| Checkout         | /checkout         | Yes (user)    |
+| Profile / Orders | /profile          | Yes (user)    |
+| Admin Dashboard  | /admin            | Yes (admin)   |
+| Admin Products   | /admin/products   | Yes (admin)   |
+| Admin Orders     | /admin/orders     | Yes (admin)   |
+| Admin Users      | /admin/users      | Yes (admin)   |
+
+---
+
+## Next Step: Backend
+
+Once this frontend is running, we will build:
+- Node.js + Express backend
+- MongoDB Atlas connection with Mongoose
+- Auth routes (register, login, JWT)
+- Product, Order, User routes
+- Admin middleware (role check)
+- Security: bcrypt, Helmet, rate-limiter, mongo-sanitize
