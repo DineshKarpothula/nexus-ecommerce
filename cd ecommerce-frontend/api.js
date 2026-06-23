@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const RENDER_API_BASE_URL = 'https://nexus-ecommerceplatform.onrender.com/api'
+const RENDER_API_BASE_URL = 'https://nexus-backend-1q74.onrender.com/api'
 
 const resolveApiBaseUrl = () => {
   const configured = String(import.meta.env.VITE_API_URL || '').trim()
