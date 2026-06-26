@@ -51,3 +51,5 @@ MONGODB_DB=ecommerce
 - Stripe is configured for test mode only.
 - Amounts are sent as rupees from the frontend and converted to paise in the payment controller.
 - The frontend dev server proxy should continue forwarding `/api` to `http://localhost:5000`.
+
+Testing deployment after GitHub username change.
